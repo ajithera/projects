@@ -15,8 +15,8 @@ start /B python server.py
 :: Step 5: Wait for the server to start
 timeout /t 5 >nul
 
-:: Step 6: Open the application in the default browser
-start http://127.0.0.1:5000
+:: Step 6: Open the index.html file in the default browser
+start index.html
 
 :: Step 7: Wait for the user to close the browser
 pause
