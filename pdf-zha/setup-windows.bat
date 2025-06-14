@@ -1,29 +1,32 @@
 @echo off
 
-:: Step 1: Create a virtual environment
+:: Step 1: Ensure the script is executable
+:: (Not required on Windows, but included for consistency)
+
+:: Step 2: Create a virtual environment
 python -m venv venv
 
-:: Step 2: Activate the virtual environment
+:: Step 3: Activate the virtual environment
 call venv\Scripts\activate
 
-:: Step 3: Install required packages
+:: Step 4: Install required packages
 pip install -r requirements.txt
 
-:: Step 4: Run the Flask server
+:: Step 5: Run the Flask server
 start /B python server.py
 
-:: Step 5: Wait for the server to start
+:: Step 6: Wait for the server to start
 timeout /t 5 >nul
 
-:: Step 6: Open the index.html file in the default browser
+:: Step 7: Open the index.html file in the default browser
 start index.html
 
-:: Step 7: Wait for the user to close the browser
+:: Step 8: Wait for the user to close the browser
 pause
 
-:: Step 8: Stop the server
+:: Step 9: Stop the server
 for /f "tokens=5" %%a in ('netstat -ano ^| findstr :5000') do taskkill /PID %%a /F
 
-:: Step 9: Deactivate and delete the virtual environment
+:: Step 10: Deactivate and delete the virtual environment
 call venv\Scripts\deactivate
 rmdir /s /q venv

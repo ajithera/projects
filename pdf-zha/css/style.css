@@ -1,5 +1,5 @@
 body {
-    background-image: url('https://www.mariowiki.com/images/6/6e/NSMBU_SkyBackground.png');
+    background: linear-gradient(135deg, #87CEEB 0%, #1E90FF 100%);
     background-size: cover;
     background-attachment: fixed;
     font-family: 'Comic Sans MS', cursive, sans-serif;

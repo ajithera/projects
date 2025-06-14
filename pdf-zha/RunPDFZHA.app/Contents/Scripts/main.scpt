@@ -1,1 +1,1 @@
-do shell script "cd /Users/ajithkumarj/git-repo/ajithera/projects/pdf-zha && ./setup-macOS.sh"
+do shell script "cd \" & POSIX path of (path to me as text) & \"../.. && chmod +x ./setup-macOS.sh && ./setup-macOS.sh"

@@ -1,31 +1,76 @@
 #!/bin/bash
 
-# Step 1: Create a virtual environment
-python3 -m venv venv
+# Function to print error message and exit
+error_exit() {
+    echo "Error: $1"
+    exit 1
+}
 
-# Step 2: Activate the virtual environment
+echo "Setting up PDF-ZHA..."
+
+# Step 1: Check if Homebrew is installed
+if ! command -v brew &> /dev/null; then
+    echo "Homebrew is not installed. Installing Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || error_exit "Failed to install Homebrew"
+    echo "Homebrew installed successfully."
+fi
+
+# Step 2: Install Python 3.11 specifically
+echo "Installing Python 3.11..."
+brew install python@3.11 || error_exit "Failed to install Python 3.11"
+brew link python@3.11 || error_exit "Failed to link Python 3.11"
+
+# Verify Python version
+PYTHON_CMD="python3.11"
+if ! command -v $PYTHON_CMD &> /dev/null; then
+    error_exit "Python 3.11 installation failed"
+fi
+
+# Step 3: Ensure pip is up to date
+echo "Upgrading pip..."
+$PYTHON_CMD -m pip install --upgrade pip || error_exit "Failed to upgrade pip"
+
+# Step 4: Install setuptools first
+echo "Installing setuptools..."
+$PYTHON_CMD -m pip install --upgrade setuptools wheel || error_exit "Failed to install setuptools"
+
+# Step 5: Create and activate virtual environment
+echo "Creating virtual environment..."
+$PYTHON_CMD -m venv venv || error_exit "Failed to create virtual environment"
+source venv/bin/activate || error_exit "Failed to activate virtual environment"
+
+# Step 6: Pre-install critical packages
+echo "Installing critical dependencies..."
+pip install --upgrade pip setuptools wheel || error_exit "Failed to install critical dependencies"
+
+# Step 7: Install all requirements
+echo "Installing project requirements..."
+pip install -r requirements.txt || error_exit "Failed to install requirements"
+
+echo "Setup completed successfully! Virtual environment is activated."
+
+# Step 4: Activate the virtual environment
 source venv/bin/activate
 
-# Step 3: Install required packages
+# Step 5: Install required packages
 pip install -r requirements.txt
 
-# Step 4: Run the Flask server
+# Step 6: Run the Flask server
 python server.py &
-
-# Step 5: Wait for the server to start
-sleep 5
-
-# Step 6: Open the index.html file in the default browser
-open index.html
-
 SERVER_PID=$!
 
-# Step 7: Wait for the user to close the browser
+# Step 7: Wait for the server to start
+sleep 5
+
+# Step 8: Open the index.html file in the default browser
+open index.html
+
+# Step 9: Wait for the user to close the browser
 read -p "Press [Enter] once you have closed the browser to stop the server and clean up."
 
-# Step 8: Stop the server
+# Step 10: Stop the server
 kill $SERVER_PID
 
-# Step 9: Deactivate and delete the virtual environment
+# Step 11: Deactivate and delete the virtual environment
 deactivate
 rm -rf venv
