@@ -62,14 +62,17 @@ To run the Flask server for backend functionality, follow these steps:
    python server.py
    ```
 
-5. **Access the application**:
+5. **Check if the server is running**:
+   Open your browser and navigate to `http://127.0.0.1:5000`. If the server is running, it will execute the `index.html` file to access the application.
+
+6. **Access the application**:
    Open your web browser and go to:
    ```
    http://127.0.0.1:5000
    ```
    You can now use the web application with backend features enabled.
 
-6. **Stop the server**:
+7. **Stop the server**:
    To stop the server, press `Ctrl+C` in the terminal where the server is running.
 
 > **Tip**: Keep the terminal open while the server is running to see logs and debug information.
