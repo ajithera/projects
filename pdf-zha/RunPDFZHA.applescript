@@ -1,0 +1,1 @@
+do shell script "cd /Users/ajithkumarj/git-repo/ajithera/projects/pdf-zha && ./setup-macOS.sh"

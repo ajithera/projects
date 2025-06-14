@@ -15,8 +15,8 @@ python server.py &
 # Step 5: Wait for the server to start
 sleep 5
 
-# Step 6: Open the application in the default browser
-open http://127.0.0.1:5000
+# Step 6: Open the index.html file in the default browser
+open index.html
 
 SERVER_PID=$!
 
