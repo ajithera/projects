@@ -1,5 +1,5 @@
 # Import required libraries
-from flask import Flask, request, send_file
+from flask import Flask, request, send_file, render_template
 from flask_cors import CORS  # Handle cross-origin requests
 import os
 from PyPDF2 import PdfReader, PdfWriter  # PDF processing
@@ -13,7 +13,7 @@ CORS(app)  # Allow requests from different origins (needed for local development
 # Root endpoint - Used to check if server is running
 @app.route('/')
 def home():
-    return 'PDF-ZHA Flask server is running!'
+    return render_template('index.html')  # Ensure 'index.html' exists in the templates folder
 
 # Handle GET requests to /unlock-pdf (shows helpful message)
 @app.route('/unlock-pdf', methods=['GET'])
