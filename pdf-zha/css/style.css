@@ -1,0 +1,110 @@
+body {
+    background-image: url('https://www.mariowiki.com/images/6/6e/NSMBU_SkyBackground.png');
+    background-size: cover;
+    background-attachment: fixed;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    color: #333;
+    text-align: center;
+}
+
+h1 {
+    font-size: 3em;
+    color: #FF4500; /* Mario red */
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+input[type="file"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+label {
+    margin: 10px 0;
+    display: block;
+    font-weight: bold;
+}
+
+footer {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #FFD700;
+    border-top: 5px solid #FF4500;
+    text-align: center;
+    color: #777;
+}
+
+footer p {
+    margin: 5px;
+}
+
+.feature {
+    margin: 20px;
+    padding: 20px;
+    border: 2px dashed #FF4500;
+    border-radius: 10px;
+    background-color: #FFFACD; /* Light yellow */
+    display: inline-block;
+    width: 300px;
+}
+
+.feature a {
+    text-decoration: none;
+    color: #FF4500;
+    font-weight: bold;
+}
+
+.contact {
+    margin-top: 20px;
+    font-size: 1.2em;
+}
+
+.contact a {
+    color: #FF4500;
+    text-decoration: none;
+}
+
+.home-button {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #FF4500;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.home-button:hover {
+    background-color: #FF6347;
+}

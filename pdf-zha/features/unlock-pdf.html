@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajithera PDF Editor - Unlock PDF</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        body {
+            background-color: #87CEEB; /* Sky blue background */
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #FFD700; /* Gold for Mario theme */
+            padding: 20px;
+            border-bottom: 5px solid #FF4500; /* Red border */
+        }
+        header h1 {
+            font-size: 3em;
+            color: #FF4500; /* Mario red */
+            margin: 0;
+        }
+        header p {
+            font-size: 1.2em;
+            color: #333;
+            margin: 5px 0 0 0;
+        }
+        nav {
+            margin: 20px 0;
+        }
+        .home-button {
+            background-color: #FF4500;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .home-button:hover {
+            background-color: #FF6347; /* Lighter red */
+        }
+        main {
+            padding: 20px;
+        }
+        form {
+            margin: 20px auto;
+            padding: 20px;
+            border: 2px dashed #FF4500;
+            border-radius: 10px;
+            background-color: #FFFACD; /* Light yellow */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 300px;
+        }
+        form label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            text-align: left;
+            width: 100%;
+        }
+        form input {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #FF4500;
+            border-radius: 5px;
+        }
+        form button {
+            background-color: #FF4500;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #FF6347; /* Lighter red */
+        }
+        footer {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #FFD700;
+            border-top: 5px solid #FF4500;
+        }
+        footer p {
+            margin: 5px;
+        }
+        .contact {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        .contact a {
+            color: #FF4500;
+            text-decoration: none;
+        }
+        .contact a:hover {
+            text-decoration: underline;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Ajithera PDF Editor</h1>
+        <p>Created using Copilot and my idea</p>
+    </header>
+    <nav>
+        <a href="../index.html" class="home-button">Home</a>
+    </nav>
+    <main>
+        <h2>Unlock Protected PDF</h2>
+        <form id="unlockForm" method="post" enctype="multipart/form-data">
+            <label for="pdfFile">Select PDF File:</label>
+            <input type="file" id="pdfFile" name="pdfFile" accept=".pdf" required>
+
+            <label for="password">Enter Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Unlock PDF</button>
+        </form>
+        <div id="message"></div>
+        <button id="downloadButton" class="hidden">Download Unlocked PDF</button>
+    </main>
+    <footer>
+        <p>&copy; 2025 Ajithera PDF Editor. All rights reserved.</p>
+        <div class="contact">
+            <p>Contact:</p>
+            <p><a href="mailto:ajithkumarjayakumarm@gmail.com">ajithkumarjayakumarm@gmail.com</a></p>
+            <p><a href="https://linkedin.com/in/mjajithkumar" target="_blank">LinkedIn: mjajithkumar</a></p>
+        </div>
+    </footer>
+    <script>
+        document.getElementById('unlockForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const messageDiv = document.getElementById('message');
+            const downloadButton = document.getElementById('downloadButton');
+            const formData = new FormData(this);
+            
+            // Validate file
+            const fileInput = document.getElementById('pdfFile');
+            if (!fileInput.files.length) {
+                messageDiv.innerHTML = '<div class="error-message">Please select a PDF file.</div>';
+                return;
+            }
+            
+            // Show processing state
+            messageDiv.innerHTML = '<div class="processing">Processing... Please wait.</div>';
+            downloadButton.classList.add('hidden');
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/unlock-pdf', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(errorText || 'Failed to unlock PDF');
+                }
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                
+                // Show download button
+                downloadButton.classList.remove('hidden');
+                downloadButton.onclick = () => {
+                    const a = document.createElement('a');
+                    const originalName = fileInput.files[0].name.replace(/\.pdf$/i, '_unlocked.pdf');
+                    a.href = url;
+                    a.download = originalName;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                };
+
+                messageDiv.innerHTML = '<div class="success-message">PDF unlocked successfully! Click the button below to download.</div>';
+            } catch (error) {
+                console.error('Error:', error);
+                messageDiv.innerHTML = `<div class="error-message">Error: ${error.message}</div>`;
+            }
+        });
+    </script>
+</body>
+</html>

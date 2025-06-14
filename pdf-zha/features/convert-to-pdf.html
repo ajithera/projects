@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajithera PDF Editor - Convert to PDF</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        body {
+            background-color: #87CEEB; /* Sky blue background */
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #FFD700; /* Gold for Mario theme */
+            padding: 20px;
+            border-bottom: 5px solid #FF4500; /* Red border */
+        }
+        header h1 {
+            font-size: 3em;
+            color: #FF4500; /* Mario red */
+            margin: 0;
+        }
+        header p {
+            font-size: 1.2em;
+            color: #333;
+            margin: 5px 0 0 0;
+        }
+        nav {
+            margin: 20px 0;
+        }
+        .home-button {
+            background-color: #FF4500;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1.2em;
+        }
+        .home-button:hover {
+            background-color: #FF6347; /* Lighter red */
+        }
+        main {
+            padding: 20px;
+        }
+        form {
+            margin: 20px auto;
+            padding: 20px;
+            border: 2px dashed #FF4500;
+            border-radius: 10px;
+            background-color: #FFFACD; /* Light yellow */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 300px;
+        }
+        form label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            text-align: left;
+            width: 100%;
+        }
+        form input {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #FF4500;
+            border-radius: 5px;
+        }
+        form button {
+            background-color: #FF4500;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #FF6347; /* Lighter red */
+        }
+        footer {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #FFD700;
+            border-top: 5px solid #FF4500;
+        }
+        footer p {
+            margin: 5px;
+        }
+        .contact {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        .contact a {
+            color: #FF4500;
+            text-decoration: none;
+        }
+        .contact a:hover {
+            text-decoration: underline;
+        }
+        .funny-note {
+            margin-top: 10px;
+            font-style: italic;
+            color: #FF4500;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Ajithera PDF Editor</h1>
+        <p>Created using Copilot and my idea</p>
+    </header>
+    <nav>
+        <a href="../index.html" class="home-button">Home</a>
+    </nav>
+    <main>
+        <h2>Convert Word/JPEG to PDF</h2>
+        <form id="convertForm" method="post" enctype="multipart/form-data">
+            <label for="fileInput">Select Word or JPEG File:</label>
+            <input type="file" id="fileInput" name="fileInput" accept=".doc,.docx,.jpeg,.jpg" required>
+
+            <button type="submit">Convert to PDF</button>
+        </form>
+        <div id="message"></div>
+    </main>
+    <footer>
+        <p>&copy; 2025 Ajithera PDF Editor. All rights reserved.</p>
+        <div class="contact">
+            <p>Contact:</p>
+            <p><a href="mailto:ajithkumarjayakumarm@gmail.com">ajithkumarjayakumarm@gmail.com</a></p>
+            <p><a href="https://linkedin.com/in/mjajithkumar" target="_blank">LinkedIn: mjajithkumar</a></p>
+        </div>
+        <div class="funny-note">
+            <p>"Why did Mario start a PDF editor? Because he wanted to jump into the world of documents!"</p>
+            <p>This site is completely developed using Copilot. It's-a-me, Copilot!</p>
+        </div>
+    </footer>
+    <script>
+        document.getElementById('convertForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const formData = new FormData(form);
+            const messageDiv = document.getElementById('message');
+
+            messageDiv.textContent = 'Processing...';
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/convert-to-pdf', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    messageDiv.textContent = `Error: ${errorText}`;
+                    return;
+                }
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'converted.pdf';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+
+                messageDiv.textContent = 'File converted successfully!';
+            } catch (error) {
+                messageDiv.textContent = `Error: ${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html>
