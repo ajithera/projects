@@ -32,6 +32,7 @@ async function loadPdf(data) {
     showStatus('Loading PDF...');
     pdfjsLib.getDocument({ data }).promise.then(doc => {
         pdfDoc = doc;
+        window.pdfDoc = doc;
         currentPage = 1;
         renderPage(currentPage);
         showStatus('PDF loaded.');
@@ -75,6 +76,33 @@ async function renderPage(pageNum) {
     // Setup Fabric.js overlay and overlay all PDF text as editable textboxes
     await setupFabricOverlayWithPdfText(overlayCanvas, page, viewport, dpr);
     showStatus(`Page ${pageNum} of ${pdfDoc.numPages}`);
+}
+
+function setupFabricOverlay(canvas, width, height) {
+    if (fabricCanvas) {
+        fabricCanvas.dispose();
+    }
+    fabricCanvas = new fabric.Canvas(canvas, {
+        selection: true,
+        backgroundColor: null
+    });
+    window.fabricCanvas = fabricCanvas;
+    fabricCanvas.setWidth(width);
+    fabricCanvas.setHeight(height);
+    fabricCanvas.backgroundColor = null;
+    // Double-click to add text
+    fabricCanvas.on('mouse:dblclick', function(opt) {
+        const pointer = fabricCanvas.getPointer(opt.e);
+        const textbox = new fabric.Textbox('Edit me', {
+            left: pointer.x,
+            top: pointer.y,
+            fontSize: 16,
+            fill: '#000',
+            width: 120,
+            backgroundColor: ''
+        });
+        fabricCanvas.add(textbox).setActiveObject(textbox);
+    });
 }
 
 async function setupFabricOverlayWithPdfText(canvas, page, viewport, dpr) {

@@ -10,3 +10,9 @@ pycryptodome>=3.18.0
 PyPDF2>=3.0.0,<4.0.0
 fpdf>=1.7.2
 Werkzeug>=2.0.1,<3.0.0
+pdf2docx
+docx2pdf
+
+# The following JS libraries are used via CDN in the frontend and should NOT be installed with pip:
+#   pdf-lib, pdfjs-dist, fabric.js
+# Only list Python packages below:

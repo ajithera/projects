@@ -6,6 +6,28 @@ error_exit() {
     exit 1
 }
 
+# Check for interactive shell and sudo permissions
+if ! tty -s; then
+    echo "\n[ERROR] This script must be run in an interactive shell."
+    echo "Please run it from a terminal window, not from a non-interactive environment."
+    exit 1
+fi
+
+# Check if sudo is required and available
+if command -v sudo &> /dev/null; then
+    if ! sudo -n true 2>/dev/null; then
+        echo "\n[INFO] Sudo permissions are required for some steps."
+        echo "You may be prompted for your password."
+        if ! sudo -v; then
+            echo "\n[ERROR] Sudo authentication failed or not available."
+            echo "Please ensure you have sudo privileges and run this script interactively."
+            exit 1
+        fi
+    fi
+else
+    echo "\n[WARNING] 'sudo' command not found. Some dependencies may fail to install."
+fi
+
 echo "Setting up PDF-ZHA..."
 
 # Step 1: Check if Homebrew is installed

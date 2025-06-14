@@ -19,6 +19,9 @@
     <!-- Add font loading for better text matching -->
     <link href="https://fonts.googleapis.com/css2?family=Times+New+Roman:ital,wght@0,400;0,700;1,400;1,700&family=Arial:ital,wght@0,400;0,700;1,400;1,700&family=Courier+New:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     
+    <!-- pdf-lib for PDF generation -->
+    <script src="../js/pdf-lib.min.js"></script>
+    
     <style>
         body {
             margin: 0;
@@ -200,6 +203,8 @@
         <div class="file-input-container">
             <input type="file" id="pdfFile" accept=".pdf" class="hidden-input">
             <label for="pdfFile" class="button">Choose PDF File</label>
+            <button class="button" id="addTextBtn">Add Text</button>
+            <button class="button" id="removeTextBtn">Remove Selected Text</button>
         </div>
         <div class="pdf-container" id="pdfContainer" style="position: relative; display: flex; justify-content: center; align-items: flex-start; width: 100%; min-height: 100px; background: #fff; box-shadow: 0 2px 15px rgba(0,0,0,0.1); border-radius: 8px; overflow: auto;">
             <canvas id="pdfCanvas" style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
@@ -216,5 +221,48 @@
         <div class="loading-spinner"></div>
     </div>
     <script src="../js/script.js"></script>
+    <script>
+    // Add/Remove text overlay logic
+    document.getElementById('addTextBtn').onclick = function() {
+        if (window.fabricCanvas) {
+            const textbox = new fabric.Textbox('New Text', {
+                left: 100, top: 100, fontSize: 18, fill: '#000', width: 150
+            });
+            fabricCanvas.add(textbox).setActiveObject(textbox);
+        }
+    };
+    document.getElementById('removeTextBtn').onclick = function() {
+        if (window.fabricCanvas && fabricCanvas.getActiveObject()) {
+            fabricCanvas.remove(fabricCanvas.getActiveObject());
+        }
+    };
+    // Save PDF with overlays using pdf-lib
+    document.getElementById('saveButton').onclick = async function() {
+        if (!window.pdfDoc || !window.fabricCanvas) return;
+        const page = await pdfDoc.getPage(currentPage);
+        const viewport = page.getViewport({ scale });
+        // Export overlay as PNG
+        const overlayDataUrl = fabricCanvas.toDataURL({ format: 'png', multiplier: 1 });
+        // Load original PDF with pdf-lib
+        const fileInput = document.getElementById('pdfFile');
+        const file = fileInput.files[0];
+        const arrayBuffer = await file.arrayBuffer();
+        const pdfLibDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+        const pngImage = await pdfLibDoc.embedPng(overlayDataUrl);
+        const pdfPage = pdfLibDoc.getPage(currentPage - 1);
+        pdfPage.drawImage(pngImage, {
+            x: 0, y: 0,
+            width: viewport.width,
+            height: viewport.height
+        });
+        const pdfBytes = await pdfLibDoc.save();
+        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'edited.pdf';
+        a.click();
+    };
+    </script>
 </body>
 </html>
