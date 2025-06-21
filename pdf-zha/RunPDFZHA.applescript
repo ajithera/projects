@@ -1,1 +1,1 @@
-do shell script "cd /Users/ajithkumarj/git-repo/ajithera/projects/pdf-zha && ./setup-macOS.sh"
+do shell script "export RUN_FROM_APPLESCRIPT=1; /Users/ajithkumarj/git-repo/ajithera/projects/pdf-zha/setup-macOS.sh"

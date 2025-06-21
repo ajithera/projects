@@ -7,10 +7,15 @@ error_exit() {
 }
 
 # Check for interactive shell and sudo permissions
-if ! tty -s; then
-    echo "\n[ERROR] This script must be run in an interactive shell."
-    echo "Please run it from a terminal window, not from a non-interactive environment."
-    exit 1
+# Allow bypass if RUN_FROM_APPLESCRIPT=1 is set (for AppleScript/Automator)
+if [ -z "$RUN_FROM_APPLESCRIPT" ]; then
+    if ! tty -s; then
+        echo "\n[ERROR] This script must be run in an interactive shell."
+        echo "Please run it from a terminal window, not from a non-interactive environment."
+        exit 1
+    fi
+else
+    echo "[INFO] Running from AppleScript/Automator (RUN_FROM_APPLESCRIPT=1), skipping interactive shell check."
 fi
 
 # Check if sudo is required and available

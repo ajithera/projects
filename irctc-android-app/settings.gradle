@@ -1,0 +1,2 @@
+rootProject.name = 'irctc-android-app'
+include ':app'
