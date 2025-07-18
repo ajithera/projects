@@ -1,0 +1,34 @@
+login link - https://www.eduarena.ai/
+first we have to select age range range button is : 18-20
+login type - continue with google
+
+front page - type questions in chat box.
+submit answer
+
+then to choose answer there are options available below
+Left is better
+It's a tie
+Both are bad
+Right is better.
+
+once selected any option.
+
+it will ask why we selected option. there are 4 options to select
+Correctness
+Clarity
+Completeness
+Style
+
+once selected we can provide additional feed back. 
+to go "Additional Feedback (Optional)",
+once we selected random choice from ["Correctness", "Clarity", "Completeness", "Style"], 
+we have to manually go to the box If you click correctness then on the fourth click of tab to reach additional feedback box. 
+then we can fill feedback and click tab and then enter thrice to submit it. if clarity is clicked on the third click to reach box. 
+if completenesss then on the second click to reach box. for style it is on next click to reach.
+then hit tab to move to submit button and hit enter 3 times submit the feedback.
+
+
+we will get extra points for additional feed back.
+ then submit.
+
+ask next question and repeat.
